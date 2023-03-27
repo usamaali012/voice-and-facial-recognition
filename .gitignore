@@ -1,5 +1,8 @@
 data_set_1
 data_set_2
+test
+train
+venv
 attendance.csv
 haarcascade_frontalface_default.xml
 image_encodings.json
