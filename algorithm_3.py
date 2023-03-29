@@ -1,4 +1,3 @@
-import pyaudio
 import os
 import wave
 import time
