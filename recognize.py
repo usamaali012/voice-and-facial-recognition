@@ -15,11 +15,21 @@ import python_speech_features as mfcc
 
 
 class FaceAndVoiceRecognition:
-    def __init__(self, haarcascade_file_path, face_encodings_file, attendance_file_path):
+    def __init__(self,
+                 haarcascade_file_path,
+                 face_encodings_file,
+                 attendance_file_path,
+                 voice_source,
+                 voice_model_path,
+                 voice_test_file
+                 ):
         self.haarcascade_algo = haarcascade_file_path
         self.face_encodings_file = face_encodings_file
         self.face_encodings = {}
         self.attendance_file = attendance_file_path
+        self.voice_source = voice_source
+        self.voice_model_path = voice_model_path
+        self.voice_test_file = voice_test_file
         self.Format = pyaudio.paInt16
         self.Channels = 1
         self.Rate = 44100
@@ -102,13 +112,9 @@ class FaceAndVoiceRecognition:
     def recognize_voice(self):
         self.record_audio()
 
-        source = 'test/testing_set/'
-        model_path = 'train/trained_models/'
-        test_file = 'test/testing_set_addition.txt'
+        file_paths = open(self.voice_test_file, 'r')
 
-        file_paths = open(test_file, 'r')
-
-        gmm_files = [os.path.join(model_path, file_name) for file_name in os.listdir(model_path) if
+        gmm_files = [os.path.join(self.voice_model_path, file_name) for file_name in os.listdir(self.voice_model_path) if
                      file_name.endswith('.gmm')]
 
         # Load the Gaussian gender Models
@@ -119,7 +125,7 @@ class FaceAndVoiceRecognition:
         for path in file_paths:
             path = path.strip()
 
-            sr, audio = read(source + path)
+            sr, audio = read(self.voice_source + path)
             vector = self._extract_features(audio, sr)
 
             log_likelihood = np.zeros(len(models))
@@ -169,9 +175,9 @@ class FaceAndVoiceRecognition:
         audio.terminate()
 
         output_file_name = "sample.wav"
-        wave_output_file_name = os.path.join("test/testing_set", output_file_name)
+        wave_output_file_name = os.path.join(self.voice_source, output_file_name)
 
-        testing_file_list = open("test/testing_set_addition.txt", 'a')
+        testing_file_list = open(self.voice_test_file, 'a')
         testing_file_list.write(output_file_name + "\n")
 
         waveFile = wave.open(wave_output_file_name, 'wb')
@@ -237,9 +243,3 @@ class FaceAndVoiceRecognition:
             time_string = now.strftime('%I:%M:%S %p')
             if recognition_type == 'Face':
                 writer.writerow([date_string, time_string, user, 'True', 'Pending'])
-
-        # with open(self.attendance_file, 'r+') as attendance_file:
-        #     attendance_file.readlines()
-        #     now = datetime.now()
-        #     date_string = now.strftime('%d-%b-%Y %H:%M:%S')
-        #     attendance_file.writelines(f'\n{user},{date_string}')
