@@ -38,8 +38,9 @@ class FaceAndVoiceRecognition:
         self._get_encodings_from_json()
         face_name = self.recognize_face()
         if face_name != 'Unknown':
-            self.recognize_voice()
-            self._mark_attendance(face_name, 'Face')
+            voice_name = self.recognize_voice()
+            voice = True if face_name == voice_name else False
+            self._mark_attendance(face_name, face=True, voice=voice)
         else:
             print('Could Not Recognize This Face')
 
@@ -107,6 +108,8 @@ class FaceAndVoiceRecognition:
                 break
 
         # cv2.waitKey()
+        capture.release()
+        cv2.destroyAllWindows()
         return name
 
     def recognize_voice(self):
@@ -122,6 +125,7 @@ class FaceAndVoiceRecognition:
         speakers = [file_name.split("/")[-1].split(".gmm")[0] for file_name in gmm_files]
 
         # Read the test directory and get the list of test audio files
+        person_name = 'Unknown'
         for path in file_paths:
             path = path.strip()
 
@@ -137,7 +141,10 @@ class FaceAndVoiceRecognition:
 
             winner = np.argmax(log_likelihood)
 
-            print("\tdetected as - ", speakers[winner])
+            person_name = speakers[winner]
+            print("\tdetected as - ", person_name)
+
+        return person_name
 
     def record_audio(self):
         audio = pyaudio.PyAudio()
@@ -230,7 +237,7 @@ class FaceAndVoiceRecognition:
 
         return self.face_encodings
 
-    def _mark_attendance(self, user, recognition_type):
+    def _mark_attendance(self, user, face, voice):
         file_exists = os.path.isfile(self.attendance_file)
         with open(self.attendance_file, mode='a' if file_exists else 'w', newline='') as file:
             writer = csv.writer(file)
@@ -241,5 +248,7 @@ class FaceAndVoiceRecognition:
             now = datetime.now()
             date_string = now.strftime('%d-%b-%Y')
             time_string = now.strftime('%I:%M:%S %p')
-            if recognition_type == 'Face':
-                writer.writerow([date_string, time_string, user, 'True', 'Pending'])
+
+            face_result = 'True' if face else 'False'
+            voice_result = 'True' if voice else 'False'
+            writer.writerow([date_string, time_string, user, face_result, voice_result])
