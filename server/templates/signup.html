@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+
+  
+  <title>SIGNUP PAGE</title>
+
+
+
+</head>
+
+
+
+  <style>
+    body {
+
+      margin: 0;
+      padding: 50px;
+      font-family: Arial, sans-serif;
+      background-image: url("static/assets/images/heading-bg.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+    }
+
+    .signup-form-container {
+      max-width: 400px;
+      background-color: transparent;
+      padding: 30px;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      margin: 0 auto;
+      margin-top: 100px;
+      
+    }
+    
+    .logo-container {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container img {
+      width: 80px;
+      margin-right: 10px;
+    }
+ 
+
+    h1 {
+      font-size: 30px;
+      color: #080000;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      color: #0e0000;
+      font-size: 25px;
+    }
+
+    label {
+      margin-top: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button[type="submit"] {
+      margin-top: 10px;
+      padding: 10px 40px;
+      font-size: 25px;
+      background-color: #04024d;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    #actionButtons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    #actionButtons button {
+      margin: 0 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="logo-container">
+    <img src="static/assets/images/ncra-logo.png" alt="Logo 1">
+    <img src="static/assets/images/swarm-logo.png" alt="Logo 2">
+    <img src="static/assets/images/uettaxila-logo.png" alt="Logo 3">
+  </div>
+
+  <div class="signup-form-container">
+    <h1>Sign Up</h1>
+    <form action="/sign-up" method="post">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Sign Up</button>
+    </form>
+    <div id="actionButtons" style="display: none;">
+      <button onclick="captureImages()">Capture Images</button>
+      <button onclick="recordVoice()">Record Voice Samples</button>
+    </div>
+  </div>
+
+
+
+  <!-- Scripts -->
+  <script src="static/vendor/jquery/jquery.min.js"></script>
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/assets/js/isotope.min.js"></script>
+  <script src="static/assets/js/owl-carousel.js"></script>
+  <script src="static/assets/js/lightbox.js"></script>
+  <script src="static/assets/js/tabs.js"></script>
+  <script src="static/assets/js/isotope.js"></script>
+  <script src="static/assets/js/video.js"></script>
+  <script src="static/assets/js/slick-slider.js"></script>
+  <script src="static/assets/js/custom.js"></script>
+  <script>
+    function signup() {
+      // Perform sign-up functionality here
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+
+      // Example validation: check if username and password meet criteria
+      if (username.length >= 6 && password.length >= 8) {
+        // Redirect to success page
+        window.location.href = "record.html";
+        return false; // Prevent form submission
+      } else {
+        alert("Username must be at least 6 characters and password must be at least 8 characters.");
+        return false; // Prevent form submission
+      }
+    }
+
+    function captureImages() {
+      // Code for capturing images
+    }
+
+    function recordVoice() {
+      // Code for recording voice samples
+    }
+  </script>
+</body>
+
+</html>
+

@@ -104,7 +104,7 @@ class FaceAndVoiceRecognition:
                 cv2.imshow('WebCam', img)
 
             t1 = time.time()
-            if (t1 - t0) >= 10:
+            if (t1 - t0) >= self.RecordSeconds:
                 break
 
         # cv2.waitKey()

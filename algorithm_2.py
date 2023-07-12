@@ -34,6 +34,35 @@ def create_encodings(data):
         json.dump(encoded_data, file)
 
 
+def create_encodings_2():
+    data = {}
+    path = 'data_set_2'
+
+    path_images = os.listdir(path)
+    for index, image in enumerate(path_images):
+        data[index] = []
+        read_current_img = cv2.imread(f'{path}/{image}')
+        data[index].append(read_current_img)
+
+    encoded_data = {}
+    for key, images in data.items():
+        encoded_data[key] = []
+        for img in images:
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+            encode = face_recognition.face_encodings(img)
+            if len(encode) > 1:
+                encode = encode[0]
+                encoded_data[key].append(encode.tolist())
+            # encode = face_recognition.face_encodings(img)[0]
+
+
+    final_data = [value[0] for key, value in encoded_data.items() if len(value) > 0]
+
+    with open('image_encodings_2.json', 'w') as file:
+        json.dump({'encodings': final_data}, file)
+
+
 def get_encodings_from_json(file_path):
     encoded_data = {}
 
@@ -123,17 +152,18 @@ def process_image(haarcascade_file, encoded_data):
 def main():
     # Run When New DataSet Added
     ################################
-    # path = 'data_set_2'
+    # path = 'data_set_1'
     # data = get_images(path)
     # create_encodings(data)
+    create_encodings_2()
     # print('Encoding Complete')
     ################################
 
-    encodings_file = 'image_encodings.json'
-    encoded_data = get_encodings_from_json(encodings_file)
+    # encodings_file = 'image_encodings.json'
+    # encoded_data = get_encodings_from_json(encodings_file)
 
-    haarcascade_file_path = 'haarcascade_frontalface_default.xml'
-    process_image(haarcascade_file_path, encoded_data)
+    # haarcascade_file_path = 'haarcascade_frontalface_default.xml'
+    # process_image(haarcascade_file_path, encoded_data)
 
 
 if __name__ == '__main__':
