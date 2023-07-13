@@ -7,7 +7,7 @@
       margin: 0;
       padding: 80px;
       font-family: Arial, sans-serif;
-      background-image: url("../templatemo_569_edu_meeting/assets/images/heading-bg.jpg");
+      background-image: url("static/assets/images/heading-bg.jpg");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -99,14 +99,34 @@
   <button onclick="captureImages()">Capture Images</button>
   <button onclick="recordVoice()">Record Voice Samples</button>
   <div class="logo-container">
-    <img src="../templatemo_569_edu_meeting/assets/images/ncra_logo.png" alt="Logo 1">
-    <img src="../templatemo_569_edu_meeting/assets/images/swarm_logo.png" alt="Logo 2">
-    <img src="../templatemo_569_edu_meeting/assets/images/uettaxila_logo.png" alt="Logo 3">
+    <img src="static/assets/images/ncra_logo.png" alt="Logo 1">
+    <img src="static/assets/images/swarm_logo.png" alt="Logo 2">
+    <img src="static/assets/images/uettaxila_logo.png" alt="Logo 3">
   </div>
   <div class="video-container">
     <video class="background-video" autoplay loop muted>
       <source src="Images/istockphoto-1192290990-640_adpp_is.mp4" type="video/mp4">
     </video>
+  </div>
+  <script>
+    function captureImages() {
+      var currentUrl = window.location.href;
+      let paramString = currentUrl.split('?')[1];
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", `/capture-image?username=${paramString.split('=')[1]}`, true);
+      xhr.send();
+    }
+
+    function recordVoice() {
+      var currentUrl = window.location.href;
+      let paramString = currentUrl.split('?')[1];
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", `/record-voice?username=${paramString.split('=')[1]}`, true);
+      xhr.send();
+    }
+  </script>
 </body>
 </html>
 

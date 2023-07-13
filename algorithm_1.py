@@ -86,7 +86,7 @@ def main():
     images, class_names = get_images(path)
     encoded_list = find_encodings(images)
     print('Encoding Complete')
-    haarcascade_file_path = 'haarcascade_frontalface_default.xml'
+    haarcascade_file_path = 'server/haarcascade_frontalface_default.xml'
     process_image(haarcascade_file_path, encoded_list, class_names)
 
 

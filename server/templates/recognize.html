@@ -88,14 +88,20 @@
   </video> -->
   <script>
     function recognizeFace() {
+      var currentUrl = window.location.href;
+      let paramString = currentUrl.split('?')[1];
+
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", "/recognise-face", true);
+      xhr.open("GET", `/recognise-face?username=${paramString.split('=')[1]}`, true);
       xhr.send();
     }
 
     function recognizeVoice() {
+      var currentUrl = window.location.href;
+      let paramString = currentUrl.split('?')[1];
+
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", "/recognise-voice", true);
+      xhr.open("GET", `/recognise-voice?username=${paramString.split('=')[1]}`, true);
       xhr.send();
     }
   </script>

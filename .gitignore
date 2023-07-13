@@ -6,3 +6,8 @@ venv
 attendance.csv
 haarcascade_frontalface_default.xml
 image_encodings.json
+
+server/users
+server/static
+server/haarcascade_frontalface_default.xml
+server/user_data.csv
