@@ -2,7 +2,7 @@ import os
 import csv
 import cv2
 
-# import tkinter as tk
+import tkinter as tk
 
 import tornado.ioloop
 import tornado.web
@@ -44,12 +44,12 @@ class MainHandler(tornado.web.RequestHandler):
 
         elif args[0] == 'capture-image':
             print('Capture Image')
-            # self.capture_image(self.get_argument('username'))
+            self.capture_image(self.get_argument('username'))
             self.render("recognize.html")
 
         elif args[0] == 'record-voice':
             print('Record Voice')
-            # self.record_voice(self.get_argument('username'))
+            self.record_voice(self.get_argument('username'))
             self.render("recognize.html")
 
         elif args[0] == 'record':
@@ -116,56 +116,56 @@ class MainHandler(tornado.web.RequestHandler):
         else:
             self.redirect("index")
 
-    # def capture_image(self, name):
-    #     image_folder = f"users/{name}/images"
-    #     os.makedirs(image_folder, exist_ok=True)
-    #
-    #     capture_window = tk.Tk()
-    #     capture_window.title("Capture Images and Voice")
-    #     capture_window.geometry("400x200")
-    #
-    #     video_capture = cv2.VideoCapture(0)
-    #     count = 0
-    #
-    #     while count < 300:
-    #         ret, frame = video_capture.read()
-    #         cv2.imshow('Capture Images', frame)
-    #
-    #         # Save each frame as an image
-    #         image_name = f"{image_folder}/{name}_{count}.jpg"
-    #         cv2.imwrite(image_name, frame)
-    #
-    #         count += 1
-    #
-    #         if cv2.waitKey(1) & 0xFF == ord('q'):
-    #             break
-    #
-    #     path = f"{image_folder}"
-    #     encodings2(path)
-    #
-    #     # Release the webcam and close the OpenCV window
-    #     video_capture.release()
-    #     cv2.destroyAllWindows()
-    #
-    #     # Close the capture window
-    #     capture_window.destroy()
-    #
-    # def record_voice(self, name):
-    #     voice_folder = f"users/{name}/voice"
-    #     os.makedirs(voice_folder, exist_ok=True)
-    #
-    #     os.makedirs(f'{voice_folder}/test/testing_set', exist_ok=True)
-    #     os.makedirs(f'{voice_folder}/train/trained_models', exist_ok=True)
-    #     os.makedirs(f'{voice_folder}/train/training_set', exist_ok=True)
-    #
-    #     capture_window = tk.Tk()
-    #     capture_window.title("Capture Images and Voice")
-    #     capture_window.geometry("400x200")
-    #
-    #     record_audio_train(name, voice_folder)
-    #     train_model(voice_folder)
-    #
-    #     capture_window.destroy()
+    def capture_image(self, name):
+        image_folder = f"users/{name}/images"
+        os.makedirs(image_folder, exist_ok=True)
+
+        capture_window = tk.Tk()
+        capture_window.title("Capture Images and Voice")
+        capture_window.geometry("400x200")
+
+        video_capture = cv2.VideoCapture(0)
+        count = 0
+
+        while count < 300:
+            ret, frame = video_capture.read()
+            cv2.imshow('Capture Images', frame)
+
+            # Save each frame as an image
+            image_name = f"{image_folder}/{name}_{count}.jpg"
+            cv2.imwrite(image_name, frame)
+
+            count += 1
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+        path = f"{image_folder}"
+        encodings2(path)
+
+        # Release the webcam and close the OpenCV window
+        video_capture.release()
+        cv2.destroyAllWindows()
+
+        # Close the capture window
+        capture_window.destroy()
+
+    def record_voice(self, name):
+        voice_folder = f"users/{name}/voice"
+        os.makedirs(voice_folder, exist_ok=True)
+
+        os.makedirs(f'{voice_folder}/test/testing_set', exist_ok=True)
+        os.makedirs(f'{voice_folder}/train/trained_models', exist_ok=True)
+        os.makedirs(f'{voice_folder}/train/training_set', exist_ok=True)
+
+        capture_window = tk.Tk()
+        capture_window.title("Capture Images and Voice")
+        capture_window.geometry("400x200")
+
+        record_audio_train(name, voice_folder)
+        train_model(voice_folder)
+
+        capture_window.destroy()
 
     def perform_face_recognition(self, name):
         encodings_folder = f"users/{name}/images"
