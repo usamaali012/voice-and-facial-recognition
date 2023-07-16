@@ -15,7 +15,7 @@ CHANNELS = 1
 RATE = 44100
 CHUNK = 512
 RECORD_SECONDS = 4
-FILENAME = "D:/FYP_material/Voice_recognition_algorithm/test/testing_set/sample.wav"
+# FILENAME = 'users/sample.wav'
 
 
 def calculate_delta(array):
@@ -100,7 +100,7 @@ def record_audio_train(name, base_path):
         wave_file.close()
 
 
-def record_audio_test():
+def record_audio_test(base_path):
     audio = pyaudio.PyAudio()
 
     print("---------------------- Recording Device List ---------------------")
@@ -136,9 +136,9 @@ def record_audio_test():
     audio.terminate()
 
     output_file_name = "sample.wav"
-    wave_output_file_name = os.path.join("test/testing_set", output_file_name)
+    wave_output_file_name = os.path.join(base_path, "test/testing_set", output_file_name)
 
-    testing_file_list = open("test/testing_set_addition.txt", 'a')
+    testing_file_list = open(f"{base_path}/test/testing_set_addition.txt", 'a')
     testing_file_list.write(output_file_name+"\n")
 
     waveFile = wave.open(wave_output_file_name, 'wb')
@@ -184,10 +184,10 @@ def train_model(base_path):
         count = count + 1
 
 
-def test_model():
-    source = 'D:/FYP_material/Voice_recognition_algorithm/test/testing_set/'
-    model_path = 'D:/FYP_material/Voice_recognition_algorithm/train/trained_models/'
-    test_file = 'D:/FYP_material/Voice_recognition_algorithm/test/testing_set_addition.txt'
+def test_model(base_path):
+    source = f'{base_path}/test/testing_set/'
+    model_path = f'{base_path}/train/trained_models/'
+    test_file = f'{base_path}/test/testing_set_addition.txt'
 
     file_paths = open(test_file, 'r')
 
@@ -207,8 +207,8 @@ def test_model():
     for path in file_paths:
         path = path.strip()
 
-        # sr, audio = read(source + path)
-        sr, audio = read(FILENAME)
+        sr, audio = read(source + path)
+        # sr, audio = read(FILE_NAME)
         vector = extract_features(audio, sr)
 
         log_likelihood = np.zeros(len(models))

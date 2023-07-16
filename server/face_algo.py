@@ -1,3 +1,5 @@
+import time
+
 import cv2
 import json
 import numpy as np
@@ -60,7 +62,7 @@ def encodings2(path):
     # final_data = [value[0] for key, value in encoded_data.items()]
     final_data = [value[0] for key, value in encoded_data.items() if len(value)> 0]
 
-    with open(path, 'w') as file:
+    with open(f'{path}/image_encodings.json', 'w') as file:
         json.dump({'encodings': final_data}, file)
 
 
@@ -88,7 +90,7 @@ def mark_attendance(user):
         attendance_file.writelines(f'\n{user},{date_string}')
 
 
-def process_image(haarcascade_file, encoded_data):
+def process_image(haarcascade_file, encoded_data, name):
     face_cascade = cv2.CascadeClassifier(haarcascade_file)
     capture = cv2.VideoCapture(0)   # 0 = default camera
 
@@ -96,6 +98,8 @@ def process_image(haarcascade_file, encoded_data):
         print('Error in video capturing')
         return
 
+    print_name = 'Unknown'
+    t0 = int(time.time())
     while True:
         ret, img = capture.read()
         img_size = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -132,22 +136,30 @@ def process_image(haarcascade_file, encoded_data):
             values = [value for key, value in filter_results.items() if filter_results != {}]
             print('final matches', values)
 
-            name = 'Unknown'
             if len(values) > 0:
                 min_ = min(values)
                 print(min_)
 
                 for key, value in filter_results.items():
                     if value == min_:
-                        name = key.upper()
+                        print_name = name
                         break
 
             # mark_attendance(name)
             top, right, bottom, left = face_location
-            cv2.putText(img, name, (left, bottom), cv2.FONT_HERSHEY_DUPLEX, 0.4, (255, 255, 255), 1)
+            cv2.putText(img, print_name, (left, bottom), cv2.FONT_HERSHEY_DUPLEX, 0.4, (255, 255, 255), 1)
             cv2.imshow('WebCam', img)
 
+            t1 = int(time.time())
+            if (t1 - t0) >= 10:
+                break
+
     cv2.waitKey()
+    if print_name == name:
+        return True
+    else:
+        return False
+
 
 
 def main():

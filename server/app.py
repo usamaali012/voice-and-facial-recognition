@@ -174,11 +174,16 @@ class MainHandler(tornado.web.RequestHandler):
         encoded_data = get_encodings_from_json(encodings_file)
 
         haarcascade_file_path = 'haarcascade_frontalface_default.xml'
-        process_image(haarcascade_file_path, encoded_data)
+        recognized = process_image(haarcascade_file_path, encoded_data, name)
+        if not recognized:
+            print('Could not recognize the face, Returning to home page')
+            self.redirect('index')
 
     def perform_voice_recognition(self, name):
-        record_audio_test()
-        test_model()
+        voice_folder = f"users/{name}/voice"
+
+        record_audio_test(voice_folder)
+        test_model(voice_folder)
 
 def make_app():
     settings = {
